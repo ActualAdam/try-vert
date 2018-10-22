@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: try-vert
+  labels:
+    app: try-vert
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: try-vert
+  template:
+    metadata:
+      labels:
+        app: try-vert
+    spec:
+      containers:
+      - name: try-vert
+        image: gcr.io/beaming-key-220203/try-vert:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: try-vert
+spec:
+  selector:
+    app: try-vert
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
